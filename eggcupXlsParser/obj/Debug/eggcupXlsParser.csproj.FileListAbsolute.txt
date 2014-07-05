@@ -1,0 +1,10 @@
+c:\users\bohua\documents\visual studio 2012\Projects\eggcupXlsParser\eggcupXlsParser\obj\Debug\eggcupXlsParser.csprojResolveAssemblyReference.cache
+c:\users\bohua\documents\visual studio 2012\Projects\eggcupXlsParser\eggcupXlsParser\bin\Debug\NPOI.dll
+c:\users\bohua\documents\visual studio 2012\Projects\eggcupXlsParser\eggcupXlsParser\bin\Debug\eggcupXlsParser.exe
+c:\users\bohua\documents\visual studio 2012\Projects\eggcupXlsParser\eggcupXlsParser\bin\Debug\eggcupXlsParser.pdb
+c:\users\bohua\documents\visual studio 2012\Projects\eggcupXlsParser\eggcupXlsParser\bin\Debug\Newtonsoft.Json.dll
+c:\users\bohua\documents\visual studio 2012\Projects\eggcupXlsParser\eggcupXlsParser\obj\Debug\eggcupXlsParser.exe
+c:\users\bohua\documents\visual studio 2012\Projects\eggcupXlsParser\eggcupXlsParser\obj\Debug\eggcupXlsParser.pdb
+c:\users\bohua\documents\visual studio 2012\Projects\eggcupXlsParser\eggcupXlsParser\bin\Debug\Templates\登记表.xls
+C:\MyWorkSpace\eggcupXlsParser\eggcupXlsParser\obj\Debug\eggcupXlsParser.exe
+C:\MyWorkSpace\eggcupXlsParser\eggcupXlsParser\obj\Debug\eggcupXlsParser.pdb
