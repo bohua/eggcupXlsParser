@@ -8,16 +8,16 @@ using NDesk.Options;
 
 namespace eggcupXlsParser
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            //bool argCheck = true;
-            string tplPath ="";
-            string expPath ="";
-            string json = "";
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			//bool argCheck = true;
+			string tplPath = "";
+			string expPath = "";
+			string json = "";
 
-            OptionSet p = new OptionSet() {
+			OptionSet p = new OptionSet() {
                 {
                     "t|tpl=",
                     "print template xls file.",
@@ -35,65 +35,68 @@ namespace eggcupXlsParser
                 }
             };
 
-            try
-            {
-                p.Parse(args);
-            }
-            catch (Exception ex) {
-                Console.Write("Error:" + ex.Message);
-                return;
-            }
+			try
+			{
+				p.Parse(args);
+			}
+			catch (Exception ex)
+			{
+				Console.Write("Error:" + ex.Message);
+				return;
+			}
 
-            Dictionary<string, string> inputs = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+			Dictionary<string, string> inputs = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
 
-            ISheet sheet;
-            try
-            {
-                FileStream fileStream = new FileStream(tplPath, FileMode.Open);
-                IWorkbook myWorkbook = new HSSFWorkbook(fileStream);
+			ISheet sheet;
+			try
+			{
+				FileStream fileStream = new FileStream(tplPath, FileMode.Open);
+				IWorkbook myWorkbook = new HSSFWorkbook(fileStream);
 
-                sheet = myWorkbook.GetSheetAt(0);
+				sheet = myWorkbook.GetSheetAt(0);
 
-                foreach (KeyValuePair<string, string> entry in inputs)
-                {
-                    try
-                    {
-                        KeyValuePair<int, int> coordinate = getCoordinate(entry.Key);
-                        sheet.GetRow(coordinate.Value).GetCell(coordinate.Key).SetCellValue(entry.Value);
-                    }
-                    catch (Exception ex)
-                    {
-                        //Do nothing
-                        continue;
-                    }
-                }
+				foreach (KeyValuePair<string, string> entry in inputs)
+				{
+					try
+					{
+						KeyValuePair<int, int> coordinate = getCoordinate(entry.Key);
+						sheet.GetRow(coordinate.Value).GetCell(coordinate.Key).SetCellValue(entry.Value);
+					}
+					catch (Exception ex)
+					{
+						//Do nothing
+						continue;
+					}
+				}
 
-                fileStream = new FileStream(expPath, FileMode.Create);
-                myWorkbook.Write(fileStream);
-                fileStream.Close();
+				fileStream = new FileStream(expPath, FileMode.Create);
+				myWorkbook.Write(fileStream);
+				fileStream.Close();
 
-            }
-            catch (Exception ex)
-            {
-                Console.Write("Error:" + ex.Message);
-                return;
-            }
-        }
+			}
+			catch (Exception ex)
+			{
+				Console.Write("Error:" + ex.Message);
+				return;
+			}
 
-        static readonly string[] Columns = new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH" };
-        static KeyValuePair<int, int> getCoordinate(string cellName)
-        {
-            string[] coordinates = cellName.Split(',');
-            int x = Array.IndexOf(Columns, coordinates[0]);
-            int y;
-            bool parsed = Int32.TryParse(coordinates[1], out y);
+			return;
+		}
 
-            if (x < 0 || !parsed)
-            {
-                throw new Exception("NOT_VALID_CELL_NAME");
-            }
+		static readonly string[] Columns = new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH" };
+		static KeyValuePair<int, int> getCoordinate(string cellName)
+		{
+			string[] coordinates = cellName.Split(',');
+			int x = Array.IndexOf(Columns, coordinates[0]);
+			int y;
+			bool parsed = Int32.TryParse(coordinates[1], out y);
 
-            return new KeyValuePair<int, int>(x, y - 1);
-        }
-    }
+			if (x < 0 || !parsed)
+			{
+				throw new Exception("NOT_VALID_CELL_NAME");
+			}
+
+			return new KeyValuePair<int, int>(x, y - 1);
+		}
+	}
 }
