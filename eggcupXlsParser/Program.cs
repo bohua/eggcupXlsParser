@@ -16,46 +16,54 @@ namespace eggcupXlsParser
 			string tplPath = "";
 			string expPath = "";
 			string json = "";
+			SheetModel inputs;
 
 			OptionSet p = new OptionSet() {
-                {
-                    "t|tpl=",
-                    "print template xls file.",
-                    v => tplPath = v
-                },
-                {
-                    "e|export=",
-                    "print xls file export path.",
-                    v => expPath = v
-                },
-                {
-                    "j|json=",
-                    "json string to map values into cells.",
-                    v => json = v
-                }
-            };
+				{
+					"t|tpl=",
+					"print template xls file.",
+					v => tplPath = v
+				},
+				{
+					"e|export=",
+					"print xls file export path.",
+					v => expPath = v
+				},
+				{
+					"j|json=",
+					"json string to map values into cells.",
+					v => json = v
+				}
+			};
 
 			try
 			{
 				p.Parse(args);
-			}
-			catch (Exception ex)
+			}catch (Exception ex)
 			{
-				Console.Write("Error:" + ex.Message);
+				Console.Write("Error: PARSE_ARGS_ERROR::" + ex.Message);
 				return;
 			}
 
-			Dictionary<string, string> inputs = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-
-			ISheet sheet;
 			try
 			{
+				inputs = JsonConvert.DeserializeObject<SheetModel>(json);
+			}
+			catch (Exception ex)
+			{
+				Console.Write("Error: PARSE_JSON_ERROR::" + ex.Message);
+				return;
+			}
+
+			try{
+				ISheet sheet;
+
 				FileStream fileStream = new FileStream(tplPath, FileMode.Open);
 				IWorkbook myWorkbook = new HSSFWorkbook(fileStream);
 
 				sheet = myWorkbook.GetSheetAt(0);
 
-				foreach (KeyValuePair<string, string> entry in inputs)
+				foreach (KeyValuePair<string, string> entry in inputs.singleMapper)
 				{
 					try
 					{
@@ -64,7 +72,7 @@ namespace eggcupXlsParser
 					}
 					catch (Exception ex)
 					{
-						//Do nothing
+						Console.Write("WARNING: PARSE_SINGLE_MAPPER_ERROR::" + ex.Message);
 						continue;
 					}
 				}
@@ -76,9 +84,10 @@ namespace eggcupXlsParser
 			}
 			catch (Exception ex)
 			{
-				Console.Write("Error:" + ex.Message);
-				return;
+				Console.Write("Error: XLS_FILE_HANDLE_ERROR::" + ex.Message);
 			}
+
+			Console.ReadLine();
 
 			return;
 		}
