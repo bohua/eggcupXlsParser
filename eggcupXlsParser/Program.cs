@@ -67,38 +67,44 @@ namespace eggcupXlsParser
 				sheet = myWorkbook.GetSheetAt(0);
 
 				//Single Mapping Handling
-				foreach (KeyValuePair<string, string> entry in inputs.singleMapper)
+				if (inputs.singleMapper != null)
 				{
-					try
+					foreach (KeyValuePair<string, string> entry in inputs.singleMapper)
 					{
-						KeyValuePair<int, int> coordinate = getCoordinate(entry.Key);
-						sheet.GetRow(coordinate.Value).GetCell(coordinate.Key).SetCellValue(entry.Value);
-					}
-					catch (Exception ex)
-					{
-						Console.Write("WARNING: PARSE_SINGLE_MAPPER_ERROR::" + ex.Message);
-						continue;
+						try
+						{
+							KeyValuePair<int, int> coordinate = getCoordinate(entry.Key);
+							sheet.GetRow(coordinate.Value).GetCell(coordinate.Key).SetCellValue(entry.Value);
+						}
+						catch (Exception ex)
+						{
+							Console.Write("WARNING: PARSE_SINGLE_MAPPER_ERROR::" + ex.Message);
+							continue;
+						}
 					}
 				}
 
 				//Row Mapping Handling
-
-				int count = 0;
-				foreach (IDictionary<string, string> row in inputs.rowMapper.rowData)
+				if (inputs.rowMapper != null)
 				{
-					int destRowNum = inputs.rowMapper.startRow + count - 1;
-					if (count > 0)
+					int count = 0;
+					foreach (IDictionary<string, string> row in inputs.rowMapper.rowData)
 					{
-						CopyRow((HSSFWorkbook)myWorkbook, (HSSFSheet)sheet, destRowNum - 1 , destRowNum);
-						//sheet.GetRow(distRowNum).HeightInPoints = sheet.GetRow(distRowNum - 1).HeightInPoints;
-					}
+						int destRowNum = inputs.rowMapper.startRow + count - 1;
+						if (count > 0)
+						{
+							CopyRow((HSSFWorkbook)myWorkbook, (HSSFSheet)sheet, destRowNum - 1, destRowNum);
+							//sheet.GetRow(distRowNum).HeightInPoints = sheet.GetRow(distRowNum - 1).HeightInPoints;
+						}
 
-					foreach (KeyValuePair<string, string> col in row) {
-						KeyValuePair<int, int> coordinate = getCoordinate(col.Key + "," + (destRowNum + 1).ToString());
-						sheet.GetRow(coordinate.Value).GetCell(coordinate.Key).SetCellValue(col.Value);
-					}
+						foreach (KeyValuePair<string, string> col in row)
+						{
+							KeyValuePair<int, int> coordinate = getCoordinate(col.Key + "," + (destRowNum + 1).ToString());
+							sheet.GetRow(coordinate.Value).GetCell(coordinate.Key).SetCellValue(col.Value);
+						}
 
-					count++;
+						count++;
+					}
 				}
 
 				fileStream = new FileStream(expPath, FileMode.Create);
@@ -231,7 +237,7 @@ namespace eggcupXlsParser
 					worksheet.AddMergedRegion(newCellRangeAddress);
 				}
 			}
-			 
+
 
 			worksheet.GetRow(destinationRowNum).HeightInPoints = worksheet.GetRow(sourceRowNum).HeightInPoints;
 		}
