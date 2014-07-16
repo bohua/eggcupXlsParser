@@ -6,7 +6,7 @@ namespace eggcupXlsParser
 {
 	public class RowModel
 	{
-		public string startRow { get; set; }
+		public int startRow { get; set; }
 		public IList<IDictionary<string, string>> rowData { get; set; }
 	}
 
