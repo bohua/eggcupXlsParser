@@ -111,7 +111,7 @@ namespace eggcupXlsParser
 				Console.Write("Error: XLS_FILE_HANDLE_ERROR::" + ex.Message);
 			}
 
-			Console.ReadLine();
+			//Console.ReadLine();
 
 			return;
 		}
